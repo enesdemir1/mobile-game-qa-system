@@ -6,8 +6,8 @@ const PORT = 5001;
 const server = app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
   logger.info(`Environment: ${process.env.NODE_ENV}`);
-  logger.info(`API Documentation: http://localhost:${PORT}/api`);
-  logger.info(`Health Check: http://localhost:${PORT}/health`);
+  logger.info(`API Documentation: https://mw-game-qa-system.vercel.app/api`);
+  logger.info(`Health Check: https://mw-game-qa-system.vercel.app/health`);
 });
 
 // Handle unhandled promise rejections

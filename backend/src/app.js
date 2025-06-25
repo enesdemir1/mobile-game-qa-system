@@ -24,7 +24,7 @@ const app = express();
 
 // CORS configuration (MUST BE FIRST)
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://mw-game-qa-system.vercel.app'],
   credentials: true
 }));
 
