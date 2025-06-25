@@ -1,0 +1,391 @@
+{
+  "info": {
+    "name": "Mobile Game QA Test Management System API",
+    "description": "Complete API collection for testing all endpoints",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "API Documentation",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api",
+          "host": ["{{baseUrl}}"],
+          "path": ["api"]
+        }
+      }
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"admin@test.com\",\n  \"password\": \"123456\",\n  \"firstName\": \"Admin\",\n  \"lastName\": \"User\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('token', response.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Test Steps",
+      "item": [
+        {
+          "name": "Create Test Step",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Login Test Step\",\n  \"description\": \"Test user login functionality\",\n  \"expectedResult\": \"User should be able to login successfully\",\n  \"stepNumber\": 1,\n  \"category\": \"functional\",\n  \"priority\": \"high\",\n  \"tags\": [\"login\", \"authentication\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/teststeps",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "teststeps"]
+            }
+          }
+        },
+        {
+          "name": "List Test Steps",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/teststeps",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "teststeps"]
+            }
+          }
+        },
+        {
+          "name": "Get Test Step Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/teststeps/templates/list",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "teststeps", "templates", "list"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Test Suites",
+      "item": [
+        {
+          "name": "Create Test Suite",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Authentication Test Suite\",\n  \"description\": \"Test suite for authentication functionality\",\n  \"module\": \"Authentication\",\n  \"version\": \"1.0.0\",\n  \"platform\": \"both\",\n  \"category\": \"functional\",\n  \"priority\": \"high\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/testsuites",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "testsuites"]
+            }
+          }
+        },
+        {
+          "name": "List Test Suites",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/testsuites",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "testsuites"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Test Cases",
+      "item": [
+        {
+          "name": "Create Test Case",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"User Login Test Case\",\n  \"description\": \"Test user login with valid credentials\",\n  \"suiteId\": \"{{suiteId}}\",\n  \"buildVersion\": \"1.0.0\",\n  \"platform\": \"android\",\n  \"category\": \"functional\",\n  \"priority\": \"high\",\n  \"estimatedTime\": 10\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/testcases",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "testcases"]
+            }
+          }
+        },
+        {
+          "name": "List Test Cases",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/testcases",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "testcases"]
+            }
+          }
+        },
+        {
+          "name": "Update Step Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"passed\",\n  \"notes\": \"Step executed successfully\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/testcases/{{testCaseId}}/steps/{{stepId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "testcases", "{{testCaseId}}", "steps", "{{stepId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (Admin Only)",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"tester1\",\n  \"email\": \"tester1@test.com\",\n  \"password\": \"123456\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"role\": \"tester\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Audit Logs (Admin/Lead Only)",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auditlogs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auditlogs"]
+            }
+          }
+        },
+        {
+          "name": "Get Audit Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auditlogs/statistics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auditlogs", "statistics"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+} 
