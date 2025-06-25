@@ -22,11 +22,19 @@ const reportRoutes = require('./routes/reports');
 // Initialize express app
 const app = express();
 
-// CORS configuration (MUST BE FIRST)
-app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://mw-game-qa-system.vercel.app'],
-  credentials: true
-}));
+const allowedOrigins = [
+  'http://localhost:3000', // Local frontend
+  'https://mw-game-qa-system.vercel.app' // Canlı frontend (gerekirse)
+];
+
+const corsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 
 // Connect to database
 connectDB();
@@ -197,4 +205,5 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
+app.options('*', cors(corsOptions));
 module.exports = app;

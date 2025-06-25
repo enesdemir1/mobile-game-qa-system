@@ -1,13 +1,26 @@
 const app = require('./app');
 const logger = require('./utils/logger');
+const cors = require('cors');
 
-const PORT = 5001;
+const PORT = 5000;
+
+const allowedOrigins = [
+  'http://localhost:3000', // Local frontend
+  'https://mw-game-qa-system.vercel.app' // Canlı frontend (gerekirse)
+];
+
+const corsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 const server = app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
   logger.info(`Environment: ${process.env.NODE_ENV}`);
-  logger.info(`API Documentation: https://mw-game-qa-system.vercel.app/api`);
-  logger.info(`Health Check: https://mw-game-qa-system.vercel.app/health`);
+  logger.info(`API Documentation: http://localhost:${PORT}/api`);
+  logger.info(`Health Check: http://localhost:${PORT}/health`);
 });
 
 // Handle unhandled promise rejections
