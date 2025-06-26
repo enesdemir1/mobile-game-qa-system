@@ -1,20 +1,7 @@
 const app = require('./app');
 const logger = require('./utils/logger');
-const cors = require('cors');
 
-const PORT = 5000;
-
-const allowedOrigins = [
-  'http://localhost:3000', // Local frontend
-  'https://mw-game-qa-system.vercel.app' // Canlı frontend (gerekirse)
-];
-
-const corsOptions = {
-  origin: allowedOrigins,
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
